@@ -1,0 +1,54 @@
+---
+import Button from '../common/Button.astro';
+import { stats } from '../../data/credentials';
+---
+
+<section class="relative overflow-hidden bg-gradient-to-br from-cream via-forest-50 to-gold-100" aria-label="Hero">
+  <div class="max-w-7xl mx-auto px-6 py-20 md:py-28">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <div>
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-forest-100 text-forest-700 text-sm font-medium rounded-full mb-6">
+          🌿 Ayurveda · Modern Science
+        </span>
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-heading font-bold text-forest-900 mb-6 leading-tight">
+          Reverse Chronic Diseases <em class="text-gold-600 not-italic">Naturally</em>
+        </h1>
+        <p class="text-lg text-earth-800/80 mb-8 max-w-xl">
+          Personalized healing systems designed by an MD, PhD Ayurvedic specialist — rooted in classical wisdom, validated by modern research.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <Button href="/contact" variant="primary" size="lg">
+            Book Consultation Now
+          </Button>
+          <Button href="https://wa.me/919999999999" variant="whatsapp" size="lg" external>
+            Talk on WhatsApp
+          </Button>
+        </div>
+      </div>
+
+      <div class="relative flex justify-center">
+        <div class="relative w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-gold-500/30 shadow-2xl">
+          <img
+            src="/images/dr-pradnya-hero.jpg"
+            alt="Dr. Pradnya Chittawadagi — Ayurvedic Physician"
+            class="w-full h-full object-cover"
+            loading="eager"
+          />
+        </div>
+        <div class="absolute -bottom-2 right-4 md:right-8 bg-white rounded-xl shadow-lg px-4 py-2 border border-earth-100">
+          <p class="text-xs text-forest-500 font-medium">Verified Specialist</p>
+          <p class="text-sm font-semibold text-forest-900">MD · PhD · 12+ Years</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-16 grid grid-cols-3 gap-6 max-w-lg mx-auto md:mx-0">
+      {stats.map(({ value, label }) => (
+        <div class="text-center">
+          <p class="text-2xl md:text-3xl font-heading font-bold text-forest-900">{value}</p>
+          <p class="text-xs md:text-sm text-earth-800/60 mt-1">{label}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

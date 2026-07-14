@@ -1,0 +1,23 @@
+---
+import Button from '../common/Button.astro';
+---
+
+<section class="py-20 bg-forest-900" aria-labelledby="cta-heading">
+  <div class="max-w-3xl mx-auto px-6 text-center">
+    <h2 id="cta-heading" class="text-3xl md:text-4xl font-heading font-bold text-white mb-4">
+      Your Healing Journey Starts Today
+    </h2>
+    <p class="text-white/70 text-lg mb-8 max-w-xl mx-auto">
+      Book a 1:1 consultation and receive a personalized Ayurvedic plan within 48 hours.
+      No prescriptions you don't need. No vague advice.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <Button href="/contact" variant="primary" size="lg">
+        Book Consultation Now →
+      </Button>
+      <Button href="/from-pain-to-power" variant="secondary" size="lg" class="border-white/30 text-white hover:bg-white/10 hover:text-white">
+        Explore the Healing Program
+      </Button>
+    </div>
+  </div>
+</section>

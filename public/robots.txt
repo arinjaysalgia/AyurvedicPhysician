@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+
+Sitemap: https://quantumspine.growgenx.shop/sitemap-index.xml
+Sitemap: https://quantumspine.growgenx.shop/sitemap-blog.xml

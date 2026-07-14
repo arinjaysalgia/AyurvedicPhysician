@@ -1,0 +1,58 @@
+---
+import type { BlogPostSummary } from '../../data/blog-types';
+import { Calendar, Clock } from 'lucide-react';
+
+interface Props {
+  post: BlogPostSummary;
+}
+
+const { post } = Astro.props;
+
+const formattedDate = new Date(post.publishDate).toLocaleDateString('en-IN', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<article class="group bg-white rounded-2xl overflow-hidden border border-earth-100 hover:shadow-lg transition-all duration-300">
+  {post.featuredImage && (
+    <a href={`/blog/${post.slug}`} class="block overflow-hidden">
+      <img
+        src={post.featuredImage}
+        alt={post.title}
+        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+        loading="lazy"
+      />
+    </a>
+  )}
+
+  <div class="p-6">
+    <div class="flex items-center gap-3 mb-3">
+      <span class="px-3 py-1 bg-forest-100 text-forest-700 text-xs font-medium rounded-full">
+        {post.category}
+      </span>
+    </div>
+
+    <h3 class="text-lg font-heading font-semibold text-forest-900 mb-2 group-hover:text-forest-500 transition-colors">
+      <a href={`/blog/${post.slug}`} class="hover:underline underline-offset-4">
+        {post.title}
+      </a>
+    </h3>
+
+    <p class="text-sm text-earth-800/70 mb-4 line-clamp-3">
+      {post.excerpt}
+    </p>
+
+    <div class="flex items-center gap-4 text-xs text-earth-800/50">
+      <span class="flex items-center gap-1">
+        <Calendar size={12} />
+        {formattedDate}
+      </span>
+      <span class="flex items-center gap-1">
+        <Clock size={12} />
+        {post.readTime} min read
+      </span>
+    </div>
+  </div>
+</article>

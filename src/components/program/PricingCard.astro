@@ -1,0 +1,41 @@
+---
+import Button from '../common/Button.astro';
+import { Download, Shield, Zap } from 'lucide-react';
+---
+
+<section class="py-20 bg-gold-100/30" aria-labelledby="pricing-heading">
+  <div class="max-w-lg mx-auto px-6">
+    <div class="bg-white rounded-3xl p-8 md:p-10 shadow-xl border border-gold-500/20 text-center">
+      <h2 id="pricing-heading" class="text-2xl font-heading font-bold text-forest-900 mb-2">
+        From Pain to Power
+      </h2>
+      <p class="text-earth-800/60 text-sm mb-6">Back Pain Solution Guide</p>
+
+      <div class="mb-6">
+        <span class="text-5xl font-heading font-bold text-forest-900">₹999</span>
+        <span class="text-earth-800/50 text-sm ml-2">one-time</span>
+      </div>
+
+      <div class="space-y-3 mb-8 text-left">
+        <div class="flex items-center gap-3 text-sm text-earth-800">
+          <Download size={16} class="text-forest-500 flex-shrink-0" />
+          <span>Instant PDF download after payment</span>
+        </div>
+        <div class="flex items-center gap-3 text-sm text-earth-800">
+          <Shield size={16} class="text-forest-500 flex-shrink-0" />
+          <span>Safe, educational content — no side effects</span>
+        </div>
+        <div class="flex items-center gap-3 text-sm text-earth-800">
+          <Zap size={16} class="text-forest-500 flex-shrink-0" />
+          <span>No equipment or special tools needed</span>
+        </div>
+      </div>
+
+      <Button href="https://rzp.io/rzp/4W07TOyV" variant="primary" size="lg" external class="w-full">
+        Get Instant Access Now →
+      </Button>
+
+      <p class="text-xs text-earth-800/40 mt-4">Secure payment via Razorpay</p>
+    </div>
+  </div>
+</section>

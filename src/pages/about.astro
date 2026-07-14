@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SEOHead from '../components/common/SEOHead.astro';
+import DoctorBio from '../components/about/DoctorBio.astro';
+import Credentials from '../components/about/Credentials.astro';
+import Philosophy from '../components/about/Philosophy.astro';
+
+export const prerender = true;
+
+const personSchema = {
+  '@type': 'Person',
+  name: 'Dr. Pradnya Chittawadagi',
+  jobTitle: 'Ayurvedic Physician & Research Scientist',
+  description: 'Gold medalist, PhD researcher, and Ayurvedic physician with 12+ years of experience specializing in chronic disease reversal.',
+  image: 'https://quantumspine.growgenx.shop/images/dr-pradnya-about.jpg',
+  url: 'https://quantumspine.growgenx.shop/about',
+  knowsAbout: ['Ayurveda', 'Panchakarma', 'Chronic Disease Reversal', 'PCOS', 'Diabetes', 'Back Pain'],
+  alumniOf: {
+    '@type': 'EducationalOrganization',
+    name: 'Ayurvedic Medical University',
+  },
+};
+---
+
+<BaseLayout
+  title="About Dr. Pradnya Chittawadagi — Ayurvedic Physician"
+  description="Learn about Dr. Pradnya Chittawadagi — gold medalist, PhD researcher, and Ayurvedic physician specializing in chronic disease reversal through classical Ayurveda."
+>
+  <Fragment slot="head">
+    <SEOHead structuredData={personSchema} />
+  </Fragment>
+  <DoctorBio />
+  <Credentials />
+  <Philosophy />
+</BaseLayout>

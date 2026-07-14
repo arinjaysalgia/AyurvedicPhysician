@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/common/SectionHeading.astro';
+import BlogCard from '../../components/blog/BlogCard.astro';
+import CategoryFilter from '../../components/blog/CategoryFilter.astro';
+import Pagination from '../../components/blog/Pagination.astro';
+import { getPublishedPosts, getPublishedPostsByCategory, getCategories } from '../../data/blog-kv';
+import type { BlogPostSummary } from '../../data/blog-types';
+
+export const prerender = false;
+
+const POSTS_PER_PAGE = 10;
+
+let kv: any = null;
+try {
+  const cf = await import('cloudflare:workers');
+  kv = (cf.env as any).BLOG_KV;
+} catch {}
+
+let posts: BlogPostSummary[] = [];
+let categories: string[] = [];
+
+if (kv) {
+  const categoryParam = Astro.url.searchParams.get('category');
+  categories = await getCategories(kv);
+
+  if (categoryParam) {
+    posts = await getPublishedPostsByCategory(kv, categoryParam);
+  } else {
+    posts = await getPublishedPosts(kv);
+  }
+}
+
+const pageParam = parseInt(Astro.url.searchParams.get('page') || '1', 10);
+const currentPage = Math.max(1, pageParam);
+const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
+const paginatedPosts = posts.slice(
+  (currentPage - 1) * POSTS_PER_PAGE,
+  currentPage * POSTS_PER_PAGE
+);
+
+const activeCategory = Astro.url.searchParams.get('category') || undefined;
+const baseUrl = activeCategory ? `/blog?category=${encodeURIComponent(activeCategory)}` : '/blog';
+---
+
+<BaseLayout
+  title="Blog — Ayurvedic Health Insights by Dr. Pradnya"
+  description="Read expert articles on Ayurveda, chronic disease reversal, back pain, PCOS, diabetes, and natural healing by Dr. Pradnya Chittawadagi."
+>
+  <section class="py-20 bg-cream">
+    <div class="max-w-7xl mx-auto px-6">
+      <SectionHeading
+        label="Blog"
+        title="Ayurvedic Health Insights"
+        subtitle="Expert articles on natural healing, chronic disease reversal, and Ayurvedic lifestyle."
+      />
+
+      {categories.length > 0 && (
+        <CategoryFilter categories={categories} activeCategory={activeCategory} />
+      )}
+
+      {paginatedPosts.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {paginatedPosts.map((post) => (
+            <BlogCard post={post} />
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-20">
+          <p class="text-2xl mb-2">🌿</p>
+          <p class="text-earth-800/60 text-lg">No blog posts yet. Check back soon!</p>
+        </div>
+      )}
+
+      <Pagination currentPage={currentPage} totalPages={totalPages} baseUrl={baseUrl} />
+    </div>
+  </section>
+</BaseLayout>

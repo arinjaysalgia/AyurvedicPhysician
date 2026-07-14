@@ -1,0 +1,32 @@
+---
+import SectionHeading from '../common/SectionHeading.astro';
+import { services } from '../../data/services';
+import { Video, Leaf, Apple, HeartPulse } from 'lucide-react';
+
+const iconMap: Record<string, typeof Video> = { Video, Leaf, Apple, HeartPulse };
+---
+
+<section class="py-20 bg-cream" aria-labelledby="services-heading">
+  <div class="max-w-7xl mx-auto px-6">
+    <SectionHeading
+      label="What We Offer"
+      title="A Complete Healing Ecosystem"
+      subtitle="Every service is rooted in personalization — your prakriti, your lifestyle, your goals."
+    />
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {services.map(({ icon, title, description }) => {
+        const IconComponent = iconMap[icon];
+        return (
+          <div class="group bg-earth-100/50 rounded-2xl p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border border-earth-100">
+            <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-forest-100 text-forest-700 mb-4 group-hover:bg-forest-500 group-hover:text-white transition-colors duration-300">
+              {IconComponent && <IconComponent size={24} />}
+            </div>
+            <h3 class="text-lg font-heading font-semibold text-forest-900 mb-2">{title}</h3>
+            <p class="text-sm text-earth-800/70 leading-relaxed">{description}</p>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>

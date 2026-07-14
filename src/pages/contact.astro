@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SEOHead from '../components/common/SEOHead.astro';
+import ConsultationInfo from '../components/contact/ConsultationInfo.astro';
+import ContactForm from '../components/contact/ContactForm.tsx';
+import ContactDetails from '../components/contact/ContactDetails.astro';
+
+export const prerender = true;
+
+const contactSchema = {
+  '@type': 'MedicalBusiness',
+  name: 'Dr. Pradnya Chittawadagi — Ayurvedic Consultation',
+  url: 'https://quantumspine.growgenx.shop/contact',
+  medicalSpecialty: 'Ayurvedic Medicine',
+  availableService: {
+    '@type': 'MedicalTherapy',
+    name: 'Online Ayurvedic Consultation',
+    description: '30-minute personalized video consultation with treatment plan.',
+    offers: {
+      '@type': 'Offer',
+      price: '499',
+      priceCurrency: 'INR',
+    },
+  },
+};
+---
+
+<BaseLayout
+  title="Contact Dr. Pradnya — Book an Ayurvedic Consultation"
+  description="Book a 30-minute Ayurvedic consultation with Dr. Pradnya Chittawadagi for ₹499. Send a message or connect via WhatsApp."
+>
+  <Fragment slot="head">
+    <SEOHead structuredData={contactSchema} />
+  </Fragment>
+  <ConsultationInfo />
+
+  <section class="py-20 bg-cream" aria-labelledby="contact-form-heading">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="max-w-3xl mx-auto text-center mb-12">
+        <span class="text-sm font-medium tracking-wide uppercase text-forest-500 mb-3 block">
+          Get in Touch
+        </span>
+        <h2 id="contact-form-heading" class="text-3xl md:text-4xl font-heading font-semibold text-forest-900 mb-4">
+          Send Us a Message
+        </h2>
+        <p class="text-earth-800/70">
+          Have a question before booking? Fill out the form below and we'll get back to you within 24 hours.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+        <div class="md:col-span-2">
+          <div class="bg-white rounded-2xl p-6 md:p-8 border border-earth-100 shadow-sm">
+            <ContactForm client:visible />
+          </div>
+        </div>
+
+        <div>
+          <ContactDetails />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

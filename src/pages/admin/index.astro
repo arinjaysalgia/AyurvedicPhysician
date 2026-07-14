@@ -1,0 +1,29 @@
+---
+export const prerender = true;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Admin — Dr. Pradnya's Blog</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <div id="admin-root">
+      <noscript>
+        <p style="padding: 2rem; text-align: center;">JavaScript is required for the admin panel.</p>
+      </noscript>
+    </div>
+    <script>
+      import '../../styles/global.css';
+      import { createElement } from 'react';
+      import { createRoot } from 'react-dom/client';
+      import AdminApp from '../../components/admin/AdminApp';
+      const root = createRoot(document.getElementById('admin-root')!);
+      root.render(createElement(AdminApp));
+    </script>
+  </body>
+</html>

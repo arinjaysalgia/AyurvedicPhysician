@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SEOHead from '../../components/common/SEOHead.astro';
+import BlogPostComponent from '../../components/blog/BlogPost.astro';
+import RelatedPosts from '../../components/blog/RelatedPosts.astro';
+import { getPost, getRelatedPosts } from '../../data/blog-kv';
+
+export const prerender = false;
+
+const { slug } = Astro.params;
+let kv: any = null;
+try {
+  const cf = await import('cloudflare:workers');
+  kv = (cf.env as any).BLOG_KV;
+} catch {}
+
+if (!kv || !slug) {
+  return Astro.redirect('/blog');
+}
+
+const post = await getPost(kv, slug);
+
+if (!post || post.status !== 'published') {
+  return Astro.redirect('/blog');
+}
+
+const relatedPosts = await getRelatedPosts(kv, slug, post.category, 3);
+
+const pageTitle = post.seoTitle || post.title;
+const pageDescription = post.seoDescription || post.excerpt;
+
+const articleSchema = {
+  '@type': 'Article',
+  headline: post.title,
+  description: post.excerpt,
+  author: {
+    '@type': 'Person',
+    name: post.author,
+  },
+  datePublished: post.publishDate,
+  dateModified: post.updatedAt,
+  image: post.featuredImage || undefined,
+};
+---
+
+<BaseLayout
+  title={`${pageTitle} — Dr. Pradnya's Blog`}
+  description={pageDescription}
+  ogImage={post.featuredImage || undefined}
+>
+  <Fragment slot="head">
+    <SEOHead type="article" structuredData={articleSchema} />
+  </Fragment>
+
+  <BlogPostComponent post={post} />
+  <RelatedPosts posts={relatedPosts} />
+</BaseLayout>

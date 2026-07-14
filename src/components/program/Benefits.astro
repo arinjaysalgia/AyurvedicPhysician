@@ -1,0 +1,33 @@
+---
+import SectionHeading from '../common/SectionHeading.astro';
+import { CheckCircle } from 'lucide-react';
+
+const benefits = [
+  'Understand why your back pain keeps coming back',
+  'Discover the real root cause behind your pain',
+  'Identify which daily habits are silently damaging your spine',
+  'Learn how to reduce pain naturally without medicines',
+  'Protect your spine for the long term',
+  'Know when surgery is truly unnecessary',
+];
+---
+
+<section class="py-20 bg-forest-50/50" aria-labelledby="benefits-heading">
+  <div class="max-w-3xl mx-auto px-6">
+    <SectionHeading
+      title="What You'll Learn"
+      subtitle="Six key topics covered in this comprehensive guide."
+    />
+
+    <div class="space-y-4">
+      {benefits.map((benefit) => (
+        <div class="flex items-start gap-4 bg-white rounded-xl p-4 border border-forest-100">
+          <div class="flex-shrink-0 mt-0.5">
+            <CheckCircle size={20} class="text-forest-500" />
+          </div>
+          <p class="text-earth-800">{benefit}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

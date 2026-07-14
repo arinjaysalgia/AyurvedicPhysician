@@ -1,0 +1,38 @@
+---
+interface Props {
+  href: string;
+  variant?: 'primary' | 'secondary' | 'whatsapp';
+  size?: 'sm' | 'md' | 'lg';
+  external?: boolean;
+  class?: string;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  external = false,
+  class: className = '',
+} = Astro.props;
+
+const baseClasses = 'inline-flex items-center justify-center font-semibold rounded-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-500 focus-visible:ring-offset-2';
+
+const variantClasses = {
+  primary: 'bg-gold-600 text-white hover:bg-gold-500 hover:shadow-lg',
+  secondary: 'border-2 border-forest-700 text-forest-700 hover:bg-forest-700 hover:text-white',
+  whatsapp: 'bg-[#25D366] text-white hover:bg-[#1DA851] hover:shadow-lg',
+};
+
+const sizeClasses = {
+  sm: 'px-4 py-2 text-sm',
+  md: 'px-6 py-3 text-base',
+  lg: 'px-8 py-4 text-lg',
+};
+
+const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`.trim();
+const externalAttrs = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+---
+
+<a href={href} class={classes} {...externalAttrs}>
+  <slot />
+</a>

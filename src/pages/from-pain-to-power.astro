@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProgramHero from '../components/program/ProgramHero.astro';
+import PainPoints from '../components/program/PainPoints.astro';
+import Benefits from '../components/program/Benefits.astro';
+import Modules from '../components/program/Modules.astro';
+import PricingCard from '../components/program/PricingCard.astro';
+import CountdownTimer from '../components/program/CountdownTimer.tsx';
+import ProgramFAQ from '../components/program/ProgramFAQ.tsx';
+import { faq } from '../data/faq';
+
+import SEOHead from '../components/common/SEOHead.astro';
+
+export const prerender = true;
+
+const offerEndDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+
+const productSchema = {
+  '@type': 'Product',
+  name: 'From Pain to Power — Back Pain Solution Guide',
+  description: 'A practical Ayurvedic guide to understand and fix back pain naturally. Designed by Dr. Pradnya Chittawadagi.',
+  url: 'https://quantumspine.growgenx.shop/from-pain-to-power',
+  brand: { '@type': 'Brand', name: 'Dr. Pradnya Chittawadagi' },
+  offers: {
+    '@type': 'Offer',
+    price: '999',
+    priceCurrency: 'INR',
+    availability: 'https://schema.org/InStock',
+    url: 'https://rzp.io/rzp/4W07TOyV',
+  },
+};
+---
+
+<BaseLayout
+  title="From Pain to Power — Back Pain Solution Guide | Dr. Pradnya"
+  description="A practical Ayurvedic guide to understand and fix back pain naturally. Designed by Dr. Pradnya Chittawadagi. Instant PDF download for ₹999."
+>
+  <Fragment slot="head">
+    <SEOHead structuredData={productSchema} />
+  </Fragment>
+  <ProgramHero />
+  <PainPoints />
+  <Benefits />
+  <Modules />
+
+  <div class="max-w-lg mx-auto px-6 py-12">
+    <CountdownTimer client:visible endDate={offerEndDate} />
+  </div>
+
+  <PricingCard />
+  <ProgramFAQ client:visible items={faq} />
+</BaseLayout>

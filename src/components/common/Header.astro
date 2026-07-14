@@ -1,0 +1,50 @@
+---
+import MobileNav from './MobileNav.tsx';
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/from-pain-to-power', label: 'Program' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-40 bg-cream/95 backdrop-blur-sm border-b border-earth-100">
+  <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between" aria-label="Main navigation">
+    <a href="/" class="flex items-center gap-2 font-heading font-bold text-xl text-forest-900">
+      <span class="text-2xl">🌿</span>
+      <span class="hidden sm:inline">Dr. Pradnya</span>
+    </a>
+
+    <ul class="hidden md:flex items-center gap-8">
+      {navLinks.map(({ href, label }) => (
+        <li>
+          <a
+            href={href}
+            class={`text-sm font-medium transition-colors duration-200 hover:text-forest-500 ${
+              currentPath === href || (href !== '/' && currentPath.startsWith(href))
+                ? 'text-forest-500'
+                : 'text-earth-800'
+            }`}
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="hidden md:block">
+      <a
+        href="/contact"
+        class="inline-flex items-center px-5 py-2 bg-gold-600 text-white text-sm font-semibold rounded-lg hover:bg-gold-500 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-500 focus-visible:ring-offset-2"
+      >
+        Book Consultation
+      </a>
+    </div>
+
+    <MobileNav client:media="(max-width: 768px)" navLinks={navLinks} currentPath={currentPath} />
+  </nav>
+</header>

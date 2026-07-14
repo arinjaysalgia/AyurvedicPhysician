@@ -1,0 +1,51 @@
+---
+import Button from '../common/Button.astro';
+import { credentials } from '../../data/credentials';
+---
+
+<section class="py-20 bg-gold-100/30" aria-labelledby="doctor-heading">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <div class="flex justify-center">
+        <div class="relative w-64 h-80 md:w-80 md:h-96 rounded-2xl overflow-hidden shadow-xl">
+          <img
+            src="/images/dr-pradnya-hero.jpg"
+            alt="Dr. Pradnya Chittawadagi"
+            class="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div>
+        <span class="text-sm font-medium tracking-wide uppercase text-forest-500 mb-3 block">
+          About the Doctor
+        </span>
+        <h2 id="doctor-heading" class="text-3xl md:text-4xl font-heading font-semibold text-forest-900 mb-4">
+          Dr. Pradnya Chittawadagi
+        </h2>
+        <p class="text-earth-800/80 mb-4 leading-relaxed">
+          Leading Ayurvedic physician, research scientist, and lifestyle medicine expert.
+          She integrates time-tested Ayurvedic protocols with evidence-based modern science
+          to design healing systems that actually work — for real people, in real lives.
+        </p>
+        <p class="text-forest-700 font-medium italic mb-6">
+          "Where classical Ayurveda meets modern science."
+        </p>
+
+        <div class="grid grid-cols-2 gap-3 mb-8">
+          {credentials.map(({ label, title }) => (
+            <div class="bg-white rounded-lg px-4 py-3 border border-earth-100">
+              <p class="text-xs text-forest-500 font-medium">{label}</p>
+              <p class="text-sm font-semibold text-forest-900">{title}</p>
+            </div>
+          ))}
+        </div>
+
+        <Button href="/about" variant="secondary">
+          Learn More About Dr. Pradnya
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>

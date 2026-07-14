@@ -1,0 +1,32 @@
+---
+import SectionHeading from '../common/SectionHeading.astro';
+import { AlertCircle } from 'lucide-react';
+
+const painPoints = [
+  'Lower back pain during sitting or standing for long periods',
+  'Morning-time pain and stiffness upon waking',
+  'Diagnosed with disc bulge or slip disc',
+  'Painkillers provide only temporary relief',
+  'Pain keeps coming back no matter what you try',
+];
+---
+
+<section class="py-20 bg-cream" aria-labelledby="painpoints-heading">
+  <div class="max-w-3xl mx-auto px-6">
+    <SectionHeading
+      title="Are You Struggling With..."
+      subtitle="If any of these sound familiar, this guide was made for you."
+    />
+
+    <div class="space-y-4">
+      {painPoints.map((point) => (
+        <div class="flex items-start gap-4 bg-red-50 rounded-xl p-4 border border-red-100">
+          <div class="flex-shrink-0 mt-0.5">
+            <AlertCircle size={20} class="text-red-500" />
+          </div>
+          <p class="text-earth-800">{point}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

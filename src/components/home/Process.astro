@@ -1,0 +1,39 @@
+---
+import SectionHeading from '../common/SectionHeading.astro';
+import { processSteps } from '../../data/process-steps';
+import { CalendarCheck, ClipboardList, ListChecks, TrendingUp } from 'lucide-react';
+
+const iconMap: Record<string, typeof CalendarCheck> = {
+  CalendarCheck, ClipboardList, ListChecks, TrendingUp,
+};
+---
+
+<section class="py-20 bg-cream" aria-labelledby="process-heading">
+  <div class="max-w-7xl mx-auto px-6">
+    <SectionHeading
+      label="How It Works"
+      title="A Simple Path to Lasting Healing"
+    />
+
+    <div class="relative grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-6">
+      {/* Connector line — desktop only */}
+      <div class="hidden md:block absolute top-12 left-[12.5%] right-[12.5%] h-0.5 border-t-2 border-dashed border-gold-500/40" aria-hidden="true"></div>
+
+      {processSteps.map(({ number, title, description, icon }) => {
+        const IconComponent = iconMap[icon];
+        return (
+          <div class="relative flex flex-col items-center text-center">
+            <div class="relative z-10 w-16 h-16 flex items-center justify-center rounded-full bg-gold-600 text-white text-xl font-bold shadow-lg mb-4">
+              {number}
+            </div>
+            <div class="w-10 h-10 flex items-center justify-center text-forest-500 mb-3">
+              {IconComponent && <IconComponent size={20} />}
+            </div>
+            <h3 class="text-lg font-heading font-semibold text-forest-900 mb-2">{title}</h3>
+            <p class="text-sm text-earth-800/70 max-w-xs">{description}</p>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>

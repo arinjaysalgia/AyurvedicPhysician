@@ -1,0 +1,18 @@
+---
+interface Props {
+  type?: 'website' | 'article';
+  structuredData?: Record<string, unknown>;
+}
+
+const { type = 'website', structuredData } = Astro.props;
+
+const jsonLd = structuredData
+  ? JSON.stringify({ '@context': 'https://schema.org', ...structuredData })
+  : null;
+---
+
+<meta property="og:type" content={type} />
+
+{jsonLd && (
+  <script type="application/ld+json" set:html={jsonLd} />
+)}

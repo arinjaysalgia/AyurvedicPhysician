@@ -1,0 +1,62 @@
+---
+const currentYear = new Date().getFullYear();
+
+const quickLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/from-pain-to-power', label: 'Program' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' },
+];
+
+const services = [
+  'Online Consultation',
+  'Panchakarma Guidance',
+  'Lifestyle & Diet Planning',
+  'Chronic Disease Reversal',
+];
+---
+
+<footer class="bg-forest-900 text-white/80">
+  <div class="max-w-7xl mx-auto px-6 py-16">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div>
+        <a href="/" class="flex items-center gap-2 font-heading font-bold text-xl text-white mb-4">
+          <span class="text-2xl">🌿</span>
+          Dr. Pradnya
+        </a>
+        <p class="text-sm leading-relaxed text-white/60">
+          Ayurvedic Physician & Research Scientist. Where classical Ayurveda meets modern science.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="font-heading font-semibold text-white text-lg mb-4">Quick Links</h3>
+        <ul class="space-y-2">
+          {quickLinks.map(({ href, label }) => (
+            <li>
+              <a href={href} class="text-sm text-white/60 hover:text-gold-500 transition-colors duration-200">
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-heading font-semibold text-white text-lg mb-4">Services</h3>
+        <ul class="space-y-2">
+          {services.map((service) => (
+            <li class="text-sm text-white/60">{service}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-white/10 text-center">
+      <p class="text-sm text-white/40">
+        &copy; {currentYear} Dr. Pradnya Chittawadagi. All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>

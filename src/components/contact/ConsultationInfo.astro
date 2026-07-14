@@ -1,0 +1,64 @@
+---
+import Button from '../common/Button.astro';
+import { Clock, Video, FileText } from 'lucide-react';
+
+const features = [
+  { icon: 'Clock', text: '30-minute guided session' },
+  { icon: 'Video', text: '1:1 video consultation' },
+  { icon: 'FileText', text: 'Written healing plan within 48 hours' },
+];
+
+const iconMap: Record<string, typeof Clock> = { Clock, Video, FileText };
+---
+
+<section class="py-20 bg-gradient-to-br from-forest-50 to-gold-100/30" aria-labelledby="consultation-heading">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <div>
+        <span class="text-sm font-medium tracking-wide uppercase text-forest-500 mb-3 block">
+          Book a Consultation
+        </span>
+        <h1 id="consultation-heading" class="text-4xl md:text-5xl font-heading font-bold text-forest-900 mb-6">
+          Start Your Healing Journey
+        </h1>
+        <p class="text-lg text-earth-800/80 mb-8 leading-relaxed">
+          Schedule a personal consultation with Dr. Pradnya. Share your health concerns,
+          get a detailed case analysis, and receive a personalized Ayurvedic treatment plan.
+        </p>
+
+        <div class="space-y-4 mb-8">
+          {features.map(({ icon, text }) => {
+            const IconComponent = iconMap[icon];
+            return (
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-forest-100 text-forest-700">
+                  {IconComponent && <IconComponent size={20} />}
+                </div>
+                <span class="text-earth-800 font-medium">{text}</span>
+              </div>
+            );
+          })}
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 border border-earth-100 shadow-sm inline-block">
+          <p class="text-sm text-earth-800/60 mb-1">Consultation Fee</p>
+          <p class="text-3xl font-heading font-bold text-forest-900 mb-3">₹499</p>
+          <Button href="https://rzp.io/rzp/4W07TOyV" variant="primary" external>
+            Pay & Schedule a Meeting
+          </Button>
+        </div>
+      </div>
+
+      <div class="hidden md:flex justify-center">
+        <div class="w-72 h-80 rounded-2xl overflow-hidden shadow-xl">
+          <img
+            src="/images/dr-pradnya-hero.jpg"
+            alt="Dr. Pradnya ready for consultation"
+            class="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

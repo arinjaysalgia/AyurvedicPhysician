@@ -1,0 +1,28 @@
+---
+interface Props {
+  label?: string;
+  title: string;
+  subtitle?: string;
+  align?: 'left' | 'center';
+}
+
+const { label, title, subtitle, align = 'center' } = Astro.props;
+
+const alignClasses = align === 'center' ? 'text-center mx-auto' : 'text-left';
+---
+
+<div class={`max-w-3xl mb-12 ${alignClasses}`}>
+  {label && (
+    <span class="text-sm font-body font-medium tracking-wide uppercase text-forest-500 mb-3 block">
+      {label}
+    </span>
+  )}
+  <h2 class="text-3xl md:text-4xl font-heading font-semibold text-forest-900 mb-4">
+    {title}
+  </h2>
+  {subtitle && (
+    <p class="text-lg text-earth-800/80">
+      {subtitle}
+    </p>
+  )}
+</div>
