@@ -1,6 +1,10 @@
 name = "ayurvedic-physician"
 compatibility_date = "2025-01-01"
-pages_build_output_dir = "./dist"
+# pages_build_output_dir = "./dist"
+
+[assets]
+binding = "STATIC_ASSETS"
+directory = "./dist/client"
 
 [vars]
 CONTACT_EMAIL = ""
@@ -11,11 +15,10 @@ CONTACT_EMAIL = ""
 # ADMIN_PASSWORD
 # JWT_SECRET
 
-# Uncomment when KV namespace and R2 bucket are created:
-# [[kv_namespaces]]
-# binding = "BLOG_KV"
-# id = "<namespace-id>"
+[[kv_namespaces]]
+binding = "BLOG_KV"
+id = "d0d9dcaf3a7b4c5f8a3fd6e43b7445d6"
 
-# [[r2_buckets]]
-# binding = "BLOG_IMAGES"
-# bucket_name = "ayurvedic-blog-images"
+[[r2_buckets]]
+binding = "BLOG_IMAGES"
+bucket_name = "ayurvedic-blog-images"
