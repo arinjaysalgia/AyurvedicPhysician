@@ -39,7 +39,7 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 
-  const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'];
+  const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
   if (!allowed.includes(file.type)) {
     return Response.json(
       { error: 'Unsupported image type.' },

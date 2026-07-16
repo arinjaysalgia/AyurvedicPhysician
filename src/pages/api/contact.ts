@@ -77,7 +77,13 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const turnstileKey = (env as any).TURNSTILE_SECRET_KEY;
-    if (turnstileKey && payload.turnstileToken) {
+    if (turnstileKey) {
+      if (!payload.turnstileToken) {
+        return new Response(
+          JSON.stringify({ error: 'CAPTCHA required.' }),
+          { status: 403, headers: corsHeaders }
+        );
+      }
       const ip = request.headers.get('CF-Connecting-IP') || '';
       const valid = await verifyTurnstile(payload.turnstileToken, turnstileKey, ip);
       if (!valid) {
