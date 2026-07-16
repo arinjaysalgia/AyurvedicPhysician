@@ -16,6 +16,10 @@ CONTACT_EMAIL = ""
 # JWT_SECRET
 
 [[kv_namespaces]]
+binding = "SESSION"
+id = "dface774b4d74a9ebe74d4332723a280"
+
+[[kv_namespaces]]
 binding = "BLOG_KV"
 id = "d0d9dcaf3a7b4c5f8a3fd6e43b7445d6"
 
