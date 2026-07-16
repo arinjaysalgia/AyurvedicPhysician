@@ -28,6 +28,9 @@ Thumbs.db
 *.swp
 *.swo
 *~
+.agents/
+.claude/
+.hallmark/
 
 # wrangler
 .wrangler/
