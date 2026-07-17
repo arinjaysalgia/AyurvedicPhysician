@@ -28,17 +28,15 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-
           command: deploy --config dist/server/wrangler.json
 
-          secrets: |
-            ADMIN_PASSWORD
-            JWT_SECRET
-            RESEND_API_KEY
-            CONTACT_EMAIL
-
+      - name: Upload Secrets
         env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           CONTACT_EMAIL: ${{ secrets.CONTACT_EMAIL }}
+        run: |
+          echo "{\"ADMIN_PASSWORD\":\"$ADMIN_PASSWORD\",\"JWT_SECRET\":\"$JWT_SECRET\",\"RESEND_API_KEY\":\"$RESEND_API_KEY\",\"CONTACT_EMAIL\":\"$CONTACT_EMAIL\"}" | npx wrangler versions secret bulk --config dist/server/wrangler.json
