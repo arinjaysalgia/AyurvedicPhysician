@@ -6,14 +6,12 @@ compatibility_date = "2025-01-01"
 binding = "STATIC_ASSETS"
 directory = "./dist/client"
 
-[vars]
-CONTACT_EMAIL = ""
-
-# Set these via Cloudflare dashboard (not committed):
+# Set these via Github Secrets:
 # RESEND_API_KEY
 # TURNSTILE_SECRET_KEY
 # ADMIN_PASSWORD
 # JWT_SECRET
+# CONTACT_EMAIL
 
 [[kv_namespaces]]
 binding = "SESSION"
@@ -26,3 +24,7 @@ id = "d0d9dcaf3a7b4c5f8a3fd6e43b7445d6"
 [[r2_buckets]]
 binding = "BLOG_IMAGES"
 bucket_name = "ayurvedic-blog-images"
+
+[observability.logs]
+enabled = false
+invocation_logs = true
