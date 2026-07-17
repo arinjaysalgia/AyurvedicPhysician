@@ -10,7 +10,7 @@ Modern multi-route website for Dr. Pradnya's Ayurvedic practice, built with Astr
 - **UI Islands:** React 19 (only interactive components ship JS)
 - **Styling:** Tailwind CSS v4 with custom forest/gold/earth color palette
 - **Fonts:** Playfair Display (headings) + Inter (body), self-hosted via @fontsource
-- **Deployment:** Cloudflare Pages + Pages Functions
+- **Deployment:** Cloudflare Workers (via GitHub Actions)
 - **Blog Storage:** Cloudflare KV (posts, categories, tags)
 - **Image Storage:** Cloudflare R2 (blog images)
 - **Email:** Resend API (contact form)
@@ -47,7 +47,7 @@ Modern multi-route website for Dr. Pradnya's Ayurvedic practice, built with Astr
 | `/admin` → Images | Upload to R2, gallery grid, copy URL, delete |
 | `/admin` → Categories & Tags | CRUD management |
 
-### API Endpoints (Cloudflare Pages Functions)
+### API Endpoints (Astro API Routes)
 
 | Endpoint | Methods | Description |
 |----------|---------|-------------|
@@ -84,8 +84,17 @@ Modern multi-route website for Dr. Pradnya's Ayurvedic practice, built with Astr
 │   │   └── program/        # ProgramHero, PainPoints, Benefits, Modules, PricingCard, CountdownTimer, ProgramFAQ
 │   ├── data/               # services, conditions, testimonials, process-steps, faq, credentials, blog-types, blog-kv, markdown
 │   ├── layouts/            # BaseLayout.astro
+│   ├── lib/                # Shared utilities
+│   │   └── auth.ts         # JWT create/verify, CORS helpers
 │   ├── pages/
 │   │   ├── admin/          # index.astro (React SPA shell)
+│   │   ├── api/            # Astro API routes (server-rendered)
+│   │   │   ├── auth.ts     # Admin login — returns JWT
+│   │   │   ├── posts.ts    # Blog CRUD
+│   │   │   ├── images.ts   # R2 image management
+│   │   │   ├── categories.ts # Category CRUD
+│   │   │   ├── tags.ts     # Tag CRUD
+│   │   │   └── contact.ts  # Contact form → Resend email
 │   │   ├── blog/           # index.astro, [slug].astro
 │   │   ├── index.astro
 │   │   ├── about.astro
@@ -93,13 +102,6 @@ Modern multi-route website for Dr. Pradnya's Ayurvedic practice, built with Astr
 │   │   ├── contact.astro
 │   │   └── sitemap-blog.xml.ts
 │   └── styles/             # global.css (Tailwind v4 + custom theme)
-├── functions/api/          # Cloudflare Pages Functions
-│   ├── auth.ts             # JWT auth
-│   ├── posts.ts            # Blog CRUD
-│   ├── images.ts           # R2 image management
-│   ├── categories.ts       # Category CRUD
-│   ├── tags.ts             # Tag CRUD
-│   └── contact.ts          # Contact form handler
 ├── public/                 # Static assets (images, favicon, robots.txt)
 ├── tests/                  # 12 test files, 614 tests
 ├── astro.config.mjs
@@ -119,17 +121,40 @@ npm run test:watch # Watch mode
 npm run typecheck  # TypeScript check
 ```
 
-## Environment Variables
+## Secrets & Credentials
 
-Set in Cloudflare dashboard (not committed):
+Secrets are stored in **GitHub Actions Secrets** and pushed to Cloudflare Workers on each deploy. They are never committed to the repo.
 
-| Variable | Description |
-|----------|-------------|
-| `ADMIN_PASSWORD` | Password for /admin login |
-| `JWT_SECRET` | Secret key for signing JWT tokens |
-| `RESEND_API_KEY` | Resend API key for contact form emails |
-| `CONTACT_EMAIL` | Email address to receive contact form submissions |
-| `TURNSTILE_SECRET_KEY` | Cloudflare Turnstile secret (optional, skipped if not set) |
+### How it works
+
+1. Secrets live in **GitHub repo → Settings → Secrets and variables → Actions**
+2. On push to `main`, the deploy workflow builds and deploys the Worker
+3. After deploy, `wrangler versions secret bulk` pipes secrets from GitHub into the Worker
+
+### Current secrets
+
+| Secret | Where to set | Description |
+|--------|-------------|-------------|
+| `CLOUDFLARE_API_TOKEN` | GitHub Actions | Cloudflare API token ("Edit Workers" permission) |
+| `CLOUDFLARE_ACCOUNT_ID` | GitHub Actions | Cloudflare account ID |
+| `ADMIN_PASSWORD` | GitHub Actions | Password for /admin login |
+| `JWT_SECRET` | GitHub Actions | Secret key for signing JWT tokens (32+ chars) |
+| `RESEND_API_KEY` | GitHub Actions | Resend API key for contact form emails |
+| `CONTACT_EMAIL` | GitHub Actions | Email address to receive contact form submissions |
+| `TURNSTILE_SECRET_KEY` | GitHub Actions | Cloudflare Turnstile secret (optional) |
+
+### Adding a new secret
+
+1. Add it to **GitHub repo → Settings → Secrets → Actions** as a new repository secret
+2. In `.github/workflows/deploy.yml`, add it to the "Upload Secrets" step:
+   - Add to the `env:` block: `NEW_SECRET: ${{ secrets.NEW_SECRET }}`
+   - Add to the JSON in the `echo` command: `\"NEW_SECRET\":\"$NEW_SECRET\"`
+3. In your code, access it via `import { env } from 'cloudflare:workers'` then `(env as any).NEW_SECRET`
+4. For local development, add it to `.env.local` (gitignored)
+
+### Local development
+
+For local dev, secrets go in `.env.local` at the project root (gitignored). This file is for personal reference only and never committed.
 
 ## Cloudflare Bindings
 
@@ -137,6 +162,7 @@ Configure in `wrangler.toml` after creating resources:
 
 | Binding | Type | Description |
 |---------|------|-------------|
+| `SESSION` | KV Namespace | Astro session storage |
 | `BLOG_KV` | KV Namespace | Blog post storage |
 | `BLOG_IMAGES` | R2 Bucket | Blog image uploads |
 
@@ -144,7 +170,7 @@ Configure in `wrangler.toml` after creating resources:
 
 The admin panel is at `/admin`. It uses password-based authentication:
 
-1. Set `ADMIN_PASSWORD` and `JWT_SECRET` as environment variables in Cloudflare dashboard
+1. Set `ADMIN_PASSWORD` and `JWT_SECRET` in GitHub Actions Secrets (deployed automatically)
 2. Navigate to `https://quantumspine.growgenx.shop/admin`
 3. Enter the admin password to sign in
 4. JWT token is stored in localStorage (24-hour expiry)
@@ -179,20 +205,25 @@ Features:
 - `prefers-reduced-motion` disables all animations/transitions
 - Focus-visible rings on interactive elements
 
-## Deploy (Phase 13)
+## Deploy
+
+Deployment is automatic via GitHub Actions on push to `main`.
 
 ```bash
-# 1. Build
-npm run build
-
-# 2. Create Cloudflare resources
-# - Pages project
-# - KV namespace → copy ID to wrangler.toml
-# - R2 bucket named "ayurvedic-blog-images"
-
-# 3. Set environment variables in Cloudflare dashboard
-# ADMIN_PASSWORD, JWT_SECRET, RESEND_API_KEY, CONTACT_EMAIL
-
-# 4. Deploy
-npx wrangler pages deploy ./dist
+git push origin main   # triggers build + deploy to Cloudflare Workers
 ```
+
+### Manual deploy (if needed)
+
+```bash
+npm run build
+CLOUDFLARE_ACCOUNT_ID=<id> npx wrangler deploy --config dist/server/wrangler.json
+```
+
+### First-time setup
+
+1. Create Cloudflare resources: KV namespaces (`SESSION`, `BLOG_KV`), R2 bucket (`ayurvedic-blog-images`)
+2. Copy KV namespace IDs into `wrangler.toml`
+3. Create a Cloudflare API token with "Edit Workers" permission
+4. Add all secrets to GitHub repo → Settings → Secrets → Actions (see [Secrets & Credentials](#secrets--credentials))
+5. Push to `main` — GitHub Actions handles the rest
